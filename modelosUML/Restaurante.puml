@@ -1,0 +1,75 @@
+@startuml
+
+package src {
+
+abstract class Ingrediente {
+  # nombre: String
+  + describir(): String
+  + {abstract} mostrar(): void
+  + getNombre(): String
+}
+
+class Hamburguesa {
+  - ingredientes: List<Ingrediente>
+  + Hamburguesa()
+  + agregarIngrediente(ingrediente: Ingrediente): void
+  + agregarIngredienteEnPosicion(ingrediente: Ingrediente, posicion: int): void
+  + eliminarIngrediente(nombreIngrediente: String): void
+  + mostrar(): void
+  + describir(): String
+}
+
+abstract class Pan {
+  + Pan(nombre: String)
+}
+
+abstract class Carne {
+  - coccion: String
+  + Carne(nombre: String, coccion: String)
+  + describir(): String
+}
+
+abstract class Extra {
+  + Extra(nombre: String)
+}
+
+abstract class Empleado {
+  # nombre: String
+  + Empleado(nombre: String)
+}
+
+class Cocinero {
+  + prepararHamburguesa(): void
+}
+
+class Camarero {
+  - hamburguesa: Hamburguesa
+  - tieneHamburguesa: boolean
+  + recibir(hamburguesa: Hamburguesa): void
+  + servir(): void
+}
+
+class Restaurante {
+  - atender(): void
+  + {static} main(args: String[]): void
+}
+
+Ingrediente <|-- Pan
+Ingrediente <|-- Carne
+Ingrediente <|-- Extra
+Pan<|--Brioche
+Pan<|--Integral
+
+Extra <|--Salsa
+Extra<|--Huevo
+Empleado <|-- Cocinero
+Empleado <|-- Camarero
+Hamburguesa o-- Ingrediente
+Restaurante --> Cocinero
+Restaurante --> Camarero
+Cocinero --> Hamburguesa: crea
+Camarero --> Hamburguesa: sirve
+
+}
+
+@enduml
