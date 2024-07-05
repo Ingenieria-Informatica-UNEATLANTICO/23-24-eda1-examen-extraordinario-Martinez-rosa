@@ -4,39 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Hamburguesa {
-    private Pan panSuperior;
-    private Pan panInferior;
-    private Carne carne;
-    private List<Extra> extras;
+    private List<Ingrediente> ingrediente;
 
-    public Hamburguesa(Pan panSuperior, Pan panInferior, Carne carne) {
-        this.panSuperior = panSuperior;
-        this.panInferior = panInferior;
-        this.carne = carne;
-        this.extras = new ArrayList<>();
+    public Hamburguesa() {
+        this.ingredientes = new ArrayList<>();
     }
 
-    public void agregarExtra(Extra extra) {
-        extras.add(extra);
+    public void agregarIngrediente(Ingrediente ingrediente) {
+        ingredientes.add(ingrediente);
     }
 
-    public void eliminarExtra(Extra extra) {
-        extras.remove(extra);
+    public void eliminarIngrediente(Ingrediente ingrediente) {
+        ingredientes.remove(ingrediente);
     }
 
     public void mostrar() {
-        panSuperior.mostrar();
-        carne.mostrar();
-        for (Extra extra : extras) {
-            extra.mostrar();
+        for (Ingrediente ingrediente : ingredientes) {
+            ingrediente.mostrar();
         }
-        panInferior.mostrar();
     }
 
     public String describir() {
-        StringBuilder descripcion = new StringBuilder(panSuperior.describir() + ", " + carne.describir());
-        for (Extra extra : extras) {
-            descripcion.append(", ").append(extra.describir());
+        StringBuilder descripcion = new StringBuilder();
+        for (int i = 0; i < ingredientes.size(); i++) {
+            descripcion.append(ingredientes.get(i).describir());
+            if (i < ingredientes.size() - 1) {
+                descripcion.append(", ");
+            }
         }
         descripcion.append("\n");
         return descripcion.toString();

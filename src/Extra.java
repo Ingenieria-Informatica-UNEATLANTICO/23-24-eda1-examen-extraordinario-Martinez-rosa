@@ -1,6 +1,12 @@
 package src;
-abstract class Extra extends Ingrediente {
-    protected Extra(String nombre) {
+
+class Extra extends Ingrediente {
+    public Extra(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public void mostrar() {
+        System.out.println("- Extra: " + nombre);
     }
 }
