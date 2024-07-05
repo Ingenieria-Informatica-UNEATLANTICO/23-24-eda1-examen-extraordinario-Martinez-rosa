@@ -1,75 +1,73 @@
 @startuml
 
-package src {
-
-abstract class Ingrediente {
-  # nombre: String
-  + describir(): String
-  + {abstract} mostrar(): void
-  + getNombre(): String
-}
-
-class Hamburguesa {
-  - ingredientes: List<Ingrediente>
-  + Hamburguesa()
-  + agregarIngrediente(ingrediente: Ingrediente): void
-  + agregarIngredienteEnPosicion(ingrediente: Ingrediente, posicion: int): void
-  + eliminarIngrediente(nombreIngrediente: String): void
-  + mostrar(): void
-  + describir(): String
-}
-
-abstract class Pan {
-  + Pan(nombre: String)
-}
-
-abstract class Carne {
-  - coccion: String
-  + Carne(nombre: String, coccion: String)
-  + describir(): String
-}
-
-abstract class Extra {
-  + Extra(nombre: String)
-}
-
-abstract class Empleado {
-  # nombre: String
-  + Empleado(nombre: String)
+class Restaurante {
+    - void atender()
+    - static void main(String[] args)
 }
 
 class Cocinero {
-  + prepararHamburguesa(): void
+    - Hamburguesa hamburguesa
+    + void prepararHamburguesa()
+    + Hamburguesa entregar()
 }
 
 class Camarero {
-  - hamburguesa: Hamburguesa
-  - tieneHamburguesa: boolean
-  + recibir(hamburguesa: Hamburguesa): void
-  + servir(): void
+    - Hamburguesa hamburguesa
+    + void recibir(Hamburguesa hamburguesa)
+    + void servir()
 }
 
-class Restaurante {
-  - atender(): void
-  + {static} main(args: String[]): void
+class Hamburguesa {
+    - Ingrediente ingredientes
+    + Hamburguesa(String ingredientePrincipal)
+    + void agregarIngrediente(String nombrePadre, String nombreIngrediente)
+    + void quitarIngrediente(String nombreIngrediente)
+    + void moverIngrediente(String nombreIngrediente, String nuevoPadre)
+    + void imprimirIngredientes()
+    - Ingrediente buscarIngrediente(String nombre, Ingrediente ingrediente)
+    - void imprimirIngredientes(Ingrediente ingrediente, String prefijo)
 }
 
-Ingrediente <|-- Pan
-Ingrediente <|-- Carne
-Ingrediente <|-- Extra
-Pan<|--Brioche
-Pan<|--Integral
+class Ingrediente {
+    - String nombre
+    - Ingrediente primerHijo
+    - Ingrediente siguienteHermano
+    + Ingrediente(String nombre)
+    + String describir()
+    + void mostrar()
+    + void agregarHijo(Ingrediente hijo)
+    + void quitarHijo(String nombreHijo)
+    + Ingrediente getPrimerHijo()
+    + Ingrediente getSiguienteHermano()
+    + void setSiguienteHermano(Ingrediente siguienteHermano)
+}
 
-Extra <|--Salsa
-Extra<|--Huevo
+class Empleado {
+    + String nombre
+    + void trabajar()
+}
+
 Empleado <|-- Cocinero
 Empleado <|-- Camarero
-Hamburguesa o-- Ingrediente
-Restaurante --> Cocinero
-Restaurante --> Camarero
-Cocinero --> Hamburguesa: crea
-Camarero --> Hamburguesa: sirve
 
+Ingrediente <|-- Carne
+Ingrediente <|-- Pan
+Ingrediente <|-- Extras
+
+class Pan {
+    + String tipo
 }
+
+Pan <|-- Integral
+Pan <|-- Brioche
+
+Restaurante -> Cocinero : utiliza
+Restaurante -> Camarero : utiliza
+Cocinero -> Hamburguesa : prepara
+Camarero -> Hamburguesa : recibe
+Hamburguesa -> Ingrediente : contiene
+Ingrediente -> Pan : contiene
+Pan <|-- Integral
+Pan <|-- Brioche
 
 @enduml

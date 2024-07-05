@@ -1,41 +1,40 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Hamburguesa {
+    private Ingrediente raiz;
 
-class Hamburguesa {
-    private List<Ingrediente> ingrediente;
-
-    public Hamburguesa() {
-        this.ingredientes = new ArrayList<>();
+    public Hamburguesa(String ingredientePrincipal) {
+        this.raiz = new Ingrediente(ingredientePrincipal);
     }
 
-     public void agregarIngrediente(String nombrePadre, String nombreIngrediente) {
-        Ingrediente padre = buscarIngrediente(nombrePadre, ingredientes);
+    public void agregarIngrediente(String nombrePadre, String nombreIngrediente) {
+        Ingrediente padre = buscarIngrediente(nombrePadre, raiz);
         if (padre != null) {
             padre.agregarHijo(new Ingrediente(nombreIngrediente));
         }
     }
 
     public void quitarIngrediente(String nombreIngrediente) {
-        quitarIngrediente(nombreIngrediente, ingredientes);
-
+        quitarIngrediente(nombreIngrediente, raiz);
     }
-      private void quitarIngrediente(String nombreIngrediente, Ingrediente ingrediente) {
+
+    private void quitarIngrediente(String nombreIngrediente, Ingrediente ingrediente) {
         if (ingrediente != null) {
             ingrediente.quitarHijo(nombreIngrediente);
             quitarIngrediente(nombreIngrediente, ingrediente.getPrimerHijo());
             quitarIngrediente(nombreIngrediente, ingrediente.getSiguienteHermano());
         }
     }
-     public void moverIngrediente(String nombreIngrediente, String nuevoPadre) {
-        Ingrediente ingrediente = buscarIngrediente(nombreIngrediente, ingredientes);
+
+    public void moverIngrediente(String nombreIngrediente, String nuevoPadre) {
+        Ingrediente ingrediente = buscarIngrediente(nombreIngrediente, raiz);
         if (ingrediente != null) {
             quitarIngrediente(nombreIngrediente);
             agregarIngrediente(nuevoPadre, nombreIngrediente);
         }
     }
-       private Ingrediente buscarIngrediente(String nombre, Ingrediente ingrediente) {
+
+    private Ingrediente buscarIngrediente(String nombre, Ingrediente ingrediente) {
         if (ingrediente == null) {
             return null;
         }
@@ -49,28 +48,15 @@ class Hamburguesa {
         return result;
     }
 
-    public void mostrar() {
-        for (Ingrediente ingrediente : ingredientes) {
-            ingrediente.mostrar();
-        }
+    public void imprimirIngredientes() {
+        imprimirIngredientes(raiz, "");
     }
-     private void imprimirIngredientes(Ingrediente ingrediente, String prefijo) {
+
+    private void imprimirIngredientes(Ingrediente ingrediente, String prefijo) {
         if (ingrediente != null) {
             System.out.println(prefijo + ingrediente.describir());
             imprimirIngredientes(ingrediente.getPrimerHijo(), prefijo + "--");
             imprimirIngredientes(ingrediente.getSiguienteHermano(), prefijo);
         }
-    }
-
-    public String describir() {
-        StringBuilder descripcion = new StringBuilder();
-        for (int i = 0; i < ingredientes.size(); i++) {
-            descripcion.append(ingredientes.get(i).describir());
-            if (i < ingredientes.size() - 1) {
-                descripcion.append(", ");
-            }
-        }
-        descripcion.append("\n");
-        return descripcion.toString();
     }
 }
